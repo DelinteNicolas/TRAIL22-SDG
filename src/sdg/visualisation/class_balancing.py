@@ -8,7 +8,7 @@ def _create_histogram(filename, df):
     fig.savefig(filename)
 
 def class_balance(filename):
-    ds = sdg.load_sdg_dataset()
+    ds = sdg.dataset.load_sdg_dataset()
     df = pd.DataFrame.from_dict(ds["train"])
     _create_histogram(f"{filename}_train.png", df)
     df = pd.DataFrame.from_dict(ds["test"])

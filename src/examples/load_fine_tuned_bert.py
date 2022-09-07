@@ -2,10 +2,11 @@
 import sdg
 from transformers import pipeline
 
+
 if __name__ == "__main__":
-    model, tokenizer = sdg.load_finetuned_bert()
-    ds = sdg.load_sdg_dataset(tokenizer)
-    classifier = pipeline("text-classification", model=model, tokenizer=tokenizer, device=0)
-    inputs = ds["train"][0]["text"]
-    res = classifier(inputs)
-    print(inputs, res)
+    trainx, trainy, testx, testy = sdg.dataset.load_sdg_dataframe()
+    model, tk = sdg.models.load_finetuned_bert()
+    classifier = pipeline("text-classification", model=model, tokenizer=tk)
+
+    res = classifier(testx[0])
+    print(testx[0], res)

@@ -1,8 +1,9 @@
+from typing import List, Tuple
+import pandas as pd
 from datasets import load_dataset, DatasetDict
 from transformers import PreTrainedTokenizer
 
-
-def load_sdg_dataset(tokenizer: PreTrainedTokenizer=None) -> DatasetDict:
+def load_sdg_dataset(tokenizer: PreTrainedTokenizer) -> DatasetDict:
     """
     Load the SDG dataset. 
     If a tokenizer is provided, it is applied to the whole dataset.
@@ -17,9 +18,23 @@ def load_sdg_dataset(tokenizer: PreTrainedTokenizer=None) -> DatasetDict:
     ds = ds.remove_columns(["Unnamed: 0", "source", "header"])
     ds = ds.rename_column("SDG", "label")
 
-    if tokenizer is not None:
-        def tokenize(examples):
-            return tokenizer(examples["text"], padding="max_length", truncation=True)
+    def tokenize(examples):
+        return tokenizer(examples["text"], padding="max_length", truncation=True)
 
-        ds = ds.map(tokenize, batched=True)
-    return ds
+    return ds.map(tokenize, batched=True)
+
+def load_sdg_dataframe() -> Tuple[List[str], List[int], List[str], List[int]]:
+    """Returns the train and the test dataframe"""
+    df_train = pd.read_csv("data/Train_data.csv")
+    train_x = list(df_train["text"])
+    train_y = list(df_train["SDG"])
+    df_test = pd.read_csv("data/Test_data.csv")
+    test_x = list(df_test["text"])
+    test_y = list(df_test["SDG"])
+    return train_x, train_y, test_x, test_y
+    df_train = df_train.drop(["Unnamed: 0", "source", "header"], axis=1)
+    df_train = df_train.rename({"SDG": "label"}, axis=1)
+    df_test = pd.read_csv("data/Test_data.csv")
+    df_test = df_test.drop(["Unnamed: 0", "source", "header"],  axis=1)
+    df_test = df_test.rename({"SDG": "label"}, axis=1)
+    return df_train, df_test
