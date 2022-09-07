@@ -23,7 +23,7 @@ def load_sdg_dataset(tokenizer: PreTrainedTokenizer) -> DatasetDict:
 
     return ds.map(tokenize, batched=True)
 
-def load_sdg_dataframe() -> Tuple[List[str], List[int], List[str], List[int]]:
+def load_sdg() -> Tuple[List[str], List[int], List[str], List[int]]:
     """Returns the train and the test dataframe"""
     df_train = pd.read_csv("data/Train_data.csv")
     train_x = list(df_train["text"])

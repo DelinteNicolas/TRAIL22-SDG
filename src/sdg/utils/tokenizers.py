@@ -1,7 +1,9 @@
 import re
 import string
+from typing import List
 import spacy
 from nltk.stem import PorterStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 porter = PorterStemmer()
 nlp = spacy.load('en_core_web_sm',disable=['parser', 'ner'])
@@ -16,3 +18,17 @@ def lemmatize_stem(s: str) -> str:
     s = lemmatize(s)
     s = ' '.join([porter.stem(token) for token in s.split() if not token.isnumeric() ])
     return s
+
+
+def get_vectorizer(train_x: List[str]) -> TfidfVectorizer:
+    vectorizer = TfidfVectorizer(
+        smooth_idf=True,
+        use_idf=True, 
+        stop_words="english", 
+        analyzer='word',
+        ngram_range=(1, 1), 
+        max_df=0.1, 
+        min_df=4/1664
+    )
+    vectorizer.fit(train_x)
+    return vectorizer

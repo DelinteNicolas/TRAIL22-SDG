@@ -31,10 +31,10 @@ def eval_classifier(n_classes, Y_true,Y_pred, pred ):
 if __name__ == "__main__":
     tk = sdg.tokenizers.lemmatize_stem
     model, vectorizer = sdg.models.tf_idf(tk)
-    train_df, test_df = sdg.dataset.load_sdg_dataframe()
-    test_data = vectorizer.transform(test_df["text"].apply(tk))
-    test_labels = np.array(test_df["label"]) - 1
-    predicted_probs = model.predict_proba(test_data)
+    _, _, test_x, test_y = sdg.dataset.load_sdg()
+    test_x = vectorizer.transform([tk(x) for x in test_x])
+    test_y = np.array(test_y) - 1 # Because SDG labels start at 1
+    predicted_probs = model.predict_proba(test_x)
     predicted_labels = np.argmax(predicted_probs, axis=-1)
-    eval_classifier(17, test_labels, predicted_labels, predicted_probs)
+    eval_classifier(17, test_y, predicted_labels, predicted_probs)
     
