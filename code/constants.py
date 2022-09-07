@@ -1,7 +1,3 @@
-import transformers as tfs
-import pandas as pd
-from icecream import ic
-
 SDGS = [
     "End poverty in all its forms everywhere",
     "End hunger, achieve food security and improved nutrition and promote sustainable agriculture",
@@ -21,24 +17,3 @@ SDGS = [
     "Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels",
     "Strengthen the means of implementation and revitalize the Global Partnership for Sustainable Development"        
 ]
-
-def display_result(res):
-    print(res["sequence"])
-    for label, score in zip(res["labels"], res["scores"]):
-        i = SDGS.index(label) + 1
-        print(f"\t[{score}] {i} {label}")
-
-
-if __name__ == "__main__":
-    df = pd.read_csv("data/train.csv")
-    ic(df)
-    exit()
-
-    classifier = tfs.pipeline("zero-shot-classification")
-    results = classifier([
-            "These efforts have been supported by the international community, with financial and technical contributions to regional communities and specific initiatives to foster African development."
-        ],
-        candidate_labels=SDGS
-    )
-    for result in results:
-        display_result(result)

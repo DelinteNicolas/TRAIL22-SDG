@@ -1,0 +1,24 @@
+[project]
+name = "TRAIL 2022 - Sustainable Development Goals project"
+description = "TODO"
+version = "0.1.0"
+authors = [
+    { name = "Ahmad Tayseer Hammoudeh", email = "535653@umons.ac.be"},
+    { name = "Arne Binder", email = "arne.binder@dfki.de"},
+    { name = "Bastien Vanderplaetse", email = "bastien.vanderplaetse@umons.ac.be"},
+    { name = "Leonhard Henning", email = "leonhard.hennig@dfki.de"},
+    { name = "Martin Balfroid", email = "martin.balfroid@unamur.be"},
+    { name = "Nicolas Delinte", email = "nicolas.delinte@uclouvain.be"},
+    { name = "Philippe Thomas", email = "philippe.thomas@dfki.de"},
+    { name = "Yannick Molinghen", email = "yannick.molinghen@ulb.be" }
+]
+
+dependencies = [
+    "numpy",
+    "torch",
+    "transformers",
+    "sklearn"
+]
+
+[tool.pytest.ini_options]
+pythonpath = "code"
