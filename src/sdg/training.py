@@ -1,9 +1,10 @@
+from typing import Tuple
 import torch
 import numpy as np
-from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AutoTokenizer, PreTrainedTokenizer
 from datasets import load_metric
 
-from . import utils
+from .utils import load_sdg_dataset
 
 
 def compute_metrics(eval_pred):
@@ -12,9 +13,9 @@ def compute_metrics(eval_pred):
     metric = load_metric("accuracy")
     return metric.compute(predictions=predictions, references=labels)
 
-def fine_tune_bert(save_location: str, n_epochs=3) -> torch.nn.Module:
+def fine_tune_bert(save_location: str, n_epochs=3) -> Tuple[torch.nn.Module, PreTrainedTokenizer]:
     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-    dataset = utils.load_sdg_dataset(tokenizer)
+    dataset = load_sdg_dataset(tokenizer)
     id2label = {
         "0": "Easter egg",
         "1": "SDG1: No Poverty",
@@ -52,4 +53,4 @@ def fine_tune_bert(save_location: str, n_epochs=3) -> torch.nn.Module:
 
     trainer.train()
     model.save_pretrained(save_location)
-    return model
+    return model, tokenizer

@@ -17,7 +17,8 @@ dependencies = [
     "numpy",
     "torch",
     "transformers",
-    "sklearn"
+    "sklearn",
+    "wordcloud"
 ]
 
 [tool.pytest.ini_options]
