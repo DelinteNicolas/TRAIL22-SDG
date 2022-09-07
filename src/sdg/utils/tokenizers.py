@@ -20,7 +20,7 @@ def lemmatize_stem(s: str) -> str:
     return s
 
 
-def get_vectorizer(train_x: List[str]) -> TfidfVectorizer:
+def get_vectorizer() -> TfidfVectorizer:
     vectorizer = TfidfVectorizer(
         smooth_idf=True,
         use_idf=True, 
@@ -30,5 +30,4 @@ def get_vectorizer(train_x: List[str]) -> TfidfVectorizer:
         max_df=0.1, 
         min_df=4/1664
     )
-    vectorizer.fit(train_x)
     return vectorizer

@@ -10,7 +10,7 @@ def tf_idf(tokenizer: Callable[[str], str]) -> Tuple[MultinomialNB, TfidfVectori
     """Returns the NaiveBayes classifier and the vectorizer"""
     train_x, train_y, _, _ = sdg.dataset.load_sdg()
     train_corpus = [tokenizer(s) for s in train_x]
-    vectorizer = sdg.utils.get_vectorizer(train_corpus)
+    vectorizer = sdg.utils.get_vectorizer()
     vectorized_train_x = vectorizer.fit_transform(train_corpus)
     clf = MultinomialNB()
     clf.fit(vectorized_train_x, train_y)
