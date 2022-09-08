@@ -6,7 +6,7 @@ from sklearn.naive_bayes import MultinomialNB
 
 
 
-def tf_idf(tokenizer: Callable[[str], str]) -> Tuple[MultinomialNB, TfidfVectorizer]:
+def tf_idf_classifier(tokenizer: Callable[[str], str]) -> Tuple[MultinomialNB, TfidfVectorizer]:
     """Returns the NaiveBayes classifier and the vectorizer"""
     train_x, train_y, _, _ = sdg.dataset.load_sdg()
     train_corpus = [tokenizer(s) for s in train_x]

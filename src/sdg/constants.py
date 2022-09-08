@@ -1,3 +1,4 @@
+
 SDGS = [
     "End poverty in all its forms everywhere",
     "End hunger, achieve food security and improved nutrition and promote sustainable agriculture",
@@ -17,3 +18,27 @@ SDGS = [
     "Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels",
     "Strengthen the means of implementation and revitalize the Global Partnership for Sustainable Development"        
 ]
+"""SDG titles from the UN"""
+
+
+SDG_DICT = {
+    0: "Not about sustailable development goals",
+    1: "No Poverty",
+    2: "Zero Hunger",
+    3: "Good Health and Well-being",
+    4: "Quality Education",
+    5: "Gender Equality",
+    6: "Clean Water and Sanitation",
+    7: "Affordable and Clean Energy",
+    8: "Decent Work and Economic Growth",
+    9: "Industry, Innovation and Infrastructure",
+    10: "Reduced Inequality",
+    11: "Sustainable Cities and Communities",
+    12: "Responsible Consumption and Production",
+    13: "Climate Action",
+    14: "Life Below Water",
+    15: "Life on Land",
+    16: "Peace, Justice and Strong Institutions",
+    17: "Partnerships"
+}
+"""From wikipedia's SDG summaries https://en.wikipedia.org/wiki/Sustainable_Development_Goals"""
