@@ -1,8 +1,9 @@
 from .constants import SDGS
 from .utils import dataset
-from .models import load_finetuned_bert
 from .training import fine_tune_bert
+from .experiment import Experiment
 
+from . import models
 from . import visualisation
 from . import training 
 from . import constants
