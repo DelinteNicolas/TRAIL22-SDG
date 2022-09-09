@@ -1,26 +1,28 @@
-[project]
-name = "TRAIL 2022 - Sustainable Development Goals project"
-description = "TODO"
+[tool.poetry]
+name = "trail22-sdg"
 version = "0.1.0"
+description = "TODO"
 authors = [
-    { name = "Ahmad Tayseer Hammoudeh", email = "535653@umons.ac.be"},
-    { name = "Arne Binder", email = "arne.binder@dfki.de"},
-    { name = "Bastien Vanderplaetse", email = "bastien.vanderplaetse@umons.ac.be"},
-    { name = "Leonhard Henning", email = "leonhard.hennig@dfki.de"},
-    { name = "Martin Balfroid", email = "martin.balfroid@unamur.be"},
-    { name = "Nicolas Delinte", email = "nicolas.delinte@uclouvain.be"},
-    { name = "Philippe Thomas", email = "philippe.thomas@dfki.de"},
-    { name = "Yannick Molinghen", email = "yannick.molinghen@ulb.be" }
+	"Ahmad Tayseer Hammoudeh <535653@umons.ac.be>",
+	"Arne Binder <arne.binder@dfki.de>",
+	"Bastien Vanderplaetse <bastien.vanderplaetse@umons.ac.be>",
+	"Martin Balfroid <martin.balfroid@unamur.be>",
+	"Nicolas Delinte <nicolas.delinte@uclouvain.be>",
+	"Philippe Thomas <philippe.thomas@dfki.de>",
+	"Yannick Molinghen <yannick.molinghen@ulb.be>"
 ]
 
-dependencies = [
-    "numpy",
-    "torch",
-    "transformers",
-    "sklearn",
-    "wordcloud",
-    "spacy"
-]
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.23.2"
+torch = "^1.12.1"
+transformers = "^4.21.3"
+sklearn = "^0.0"
+wordcloud = "^1.8.2"
+spacy = "^3.4.1"
 
-[tool.pytest.ini_options]
-pythonpath = "code"
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
