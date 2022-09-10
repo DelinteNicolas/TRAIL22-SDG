@@ -1,15 +1,15 @@
-from typing import Callable, Tuple, Union, List
-import sdg
-from sklearn.feature_extraction.text import TfidfVectorizer
+from typing import Callable, List
 from sklearn.naive_bayes import MultinomialNB
+import numpy as np
 
-from .classifier import Classifier
+import sdg
 from sdg.experiment import Classification
+from .classifier import Classifier
 
 
 class NaiveBayesClassifier(Classifier):
-    def __init__(self, labels: List[str], tokenizer: Callable[[str], str]=None):
-        Classifier.__init__(self, labels)
+    def __init__(self, tokenizer: Callable[[str], str]=None):
+        Classifier.__init__(self, sdg.SDGS)
         if tokenizer is None:
             tokenizer = sdg.tokenizers.lemmatize_stem
         self.vectorizer = sdg.utils.get_vectorizer()

@@ -1,16 +1,12 @@
-from typing import List, Tuple
-import torch
-from transformers import pipeline
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, PreTrainedTokenizer
-from sdg.constants import SDGS
-
+from transformers import pipeline, AutoModelForSequenceClassification, AutoTokenizer
+import sdg
 from sdg.experiment import Classification
 from .classifier import Classifier
 
 
 class BertClassifier(Classifier):
     def __init__(self, filename: str=None, device=-1):
-        Classifier.__init__(self, SDGS)
+        Classifier.__init__(self, sdg.SDGS)
         tk = AutoTokenizer.from_pretrained("bert-base-cased", device=device)
         if filename is None:
             filename = "DelinteNicolas/SDG_classifier_v0.0.2"
@@ -22,7 +18,11 @@ class BertClassifier(Classifier):
             x = [x]
         scores = []
         for iinput, res in zip(x, self._classifier(x)):
-            scores.append(Classification(iinput, [r["score"] for r in res]))
+            # TODO: Dirty trick: Trained with 18 classes while there are actually 17 -> remove the first one
+            # Consequence: probabilities do not sum up to one !
+            probs = [r["score"] for r in res]
+            probs = probs[1:]
+            scores.append(Classification(iinput, probs))
         if len(scores) == 1:
             return scores[0]
         return scores
