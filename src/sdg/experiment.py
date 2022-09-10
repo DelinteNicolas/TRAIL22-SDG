@@ -20,6 +20,11 @@ class Classification:
         """The predicted label"""
         return np.argmax(self.class_predictions)
 
+    @property
+    def confidence(self) -> float:
+        """The confidence of the prediction"""
+        return self.class_predictions[self.label]
+
     def top_n_labels(self, n: int) -> List[int]:
         """Retrieve the top n labels (unordered)"""
         return np.argpartition(self.class_predictions, -n)[-n:]
