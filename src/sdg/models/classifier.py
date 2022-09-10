@@ -8,6 +8,9 @@ from sdg.experiment import Classification
 class Classifier(ABC):
     labels: List[str]
 
+    @property
+    def n_classes(self) -> int:
+        return len(self.labels)
 
     @overload
     def __call__(self, x: str) -> Classification:

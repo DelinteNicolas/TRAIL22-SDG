@@ -32,45 +32,44 @@ class Classification:
 @dataclass
 class Experiment:
     results: List[Classification]
+    ground_truths: List[int]
     clf: Callable[[str], List[float]]
 
     def __init__(self, classifier: Callable[[str], List[float]]) -> None:
         self.results = []
         self.clf = classifier
+        self.ground_truths = []
 
     def run(self, dataset: List[str], labels: List[int], batch_size: int=1):
         """Run the classification on the given dataset"""
         assert len(dataset) == len(labels)
+        self.ground_truths = labels
         for i in tqdm(range(0, len(dataset), batch_size)):
-            sentences, ground_truths = dataset[i: i+batch_size], labels[i: i+batch_size]
-            probabilities = self.clf(sentences)
-            for sentence, proba, ground_truth in zip(sentences, probabilities, ground_truths):
-                self.results.append(Classification(sentence, proba, ground_truth))
+            res = self.clf(dataset[i: i+batch_size])
+            if batch_size == 1:
+                res = [res]
+            self.results += res
         
     def topn_accuracy(self, n: int) -> float:
         """Return the top-n accuracy of the experiment"""
         assert n > 0
         n_correct = 0
-        for r in self.results:
-            if r.ground_truth in r.top_n_labels(n):
+        for r, ground_truth in zip(self.results, self.ground_truths):
+            if ground_truth in r.top_n_labels(n):
                 n_correct += 1
         return n_correct / len(self.results)
 
     def precision(self) -> float:
-        pass
+        return 0.
 
     def recall(self) -> float:
-        pass
+        return 0.
 
-    def confusion_matrix(self, n_classes: int, filename: str):
+    def confusion_matrix(self, filename: str):
         fig, ax = plt.subplots(figsize=(10, 5))
         ConfusionMatrixDisplay.from_predictions(self.ground_truths, self.predictions, ax=ax)
         #ax.xaxis.set_ticklabels(np.arange(1, n_classes + 1))
         #ax.yaxis.set_ticklabels(np.arange(1, n_classes + 1))
-        
-        _ = ax.set_title(
-            f"Confusion Matrix for Naive Bayes"
-        )
         if not filename.endswith(".png"):
             filename += ".png"
         plt.savefig(filename)
@@ -80,29 +79,22 @@ class Experiment:
         with open(name, "wb") as f:
             pickle.dump(self.results, f)
 
-    def summary(self, directory: str, n_classes: int):
-        if not directory.endswith(".md"):
-            directory += ".md"
+    def summary(self, directory: str):
         if not directory.startswith("summary/"):
             directory = os.path.join("summary", directory)
-            os.makedirs(directory)
+            os.makedirs(directory, exist_ok=True)
         
-        self.confusion_matrix(n_classes, f"{directory}/confusion_matrix.png")
-        file = f"{directory}/summary"
-        with open(file, "w", encoding="utf8") as f:
-            f.write(f"# Experience summary for {self.clf.__name__}\n")
+        self.confusion_matrix(os.path.join(directory,"confusion_matrix.png"))
+        with open(os.path.join(directory, "summary.md"), "w", encoding="utf8") as f:
+            f.write(f"# Experience summary for {self.clf.__class__}\n")
             f.write(f"## Confusion matrix\n")
-            f.write(f"![confusion matrix]({directory})\n")
+            f.write(f"![confusion matrix](confusion_matrix.png)\n")
             f.write(f"## Metrics\n")
-            f.write(f"- Accuracy {self.topn_accuracy(1) * 100}%")
-            f.write(f"- Precision {self.precision() * 100}%")
-            f.write(f"- Recall {self.recall() * 100}%")
+            f.write(f"- Accuracy {self.topn_accuracy(1) * 100}%\n")
+            f.write(f"- Precision {self.precision() * 100}%\n")
+            f.write(f"- Recall {self.recall() * 100}%\n")
         self.save(f"{directory}/results.pkl")
 
-
-    @property
-    def ground_truths(self) -> List[int]:
-        return [r.ground_truth for r in self.results]
 
     @property
     def predictions(self) -> List[int]:
