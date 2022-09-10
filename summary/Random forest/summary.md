@@ -2,6 +2,6 @@
 ## Confusion matrix
 ![confusion matrix](confusion_matrix.png)
 ## Metrics
-- Accuracy 72.252%
-- Precision 75.038%
-- Recall 71.458%
+- Accuracy 71.532%
+- Precision 74.059%
+- Recall 69.862%

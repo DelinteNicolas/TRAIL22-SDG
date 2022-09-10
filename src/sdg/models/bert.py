@@ -9,7 +9,7 @@ class BertClassifier(Classifier):
         Classifier.__init__(self, sdg.SDGS)
         tk = AutoTokenizer.from_pretrained("bert-base-cased", device=device)
         if filename is None:
-            filename = "DelinteNicolas/SDG_classifier_v0.0.1"
+            filename = "DelinteNicolas/SDG_classifier_v0.0.2"
         model = AutoModelForSequenceClassification.from_pretrained(filename)
         self._classifier = pipeline("text-classification", model=model, tokenizer=tk, device=device, return_all_scores=True)
 

@@ -39,7 +39,7 @@ class Classification:
         return np.argpartition(self.class_predictions, -n)[-n:]
 
     def __repr__(self):
-        return f"SDG {self.sdg} ({self.class_predictions[self.label] * 100:.2f}%)"
+        return f"SDG {self.sdg} -- Label {self.label}  ({self.class_predictions[self.label] * 100:.2f}%)"
             
 
 @dataclass
