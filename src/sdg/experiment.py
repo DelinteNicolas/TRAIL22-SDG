@@ -5,7 +5,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import ConfusionMatrixDisplay, precision_score, recall_score
+
 
 @dataclass
 class Classification:
@@ -20,13 +21,25 @@ class Classification:
         """The predicted label"""
         return np.argmax(self.class_predictions)
 
+    @property
+    def sdg(self) -> int:
+        """The SDG corresponding to the label"""
+        sdg = self.label
+        if self.n_classes == 17:
+            sdg += 1
+        return sdg
+
+    @property
+    def n_classes(self) -> int:
+        """The number of classes"""
+        return len(self.class_predictions)
+
     def top_n_labels(self, n: int) -> List[int]:
         """Retrieve the top n labels (unordered)"""
         return np.argpartition(self.class_predictions, -n)[-n:]
 
     def __repr__(self):
-        l = self.label
-        return f"{l} ({self.class_predictions[l] * 100:.2f}%)"
+        return f"SDG {self.sdg} ({self.class_predictions[self.label] * 100:.2f}%)"
             
 
 @dataclass
@@ -90,9 +103,9 @@ class Experiment:
             f.write(f"## Confusion matrix\n")
             f.write(f"![confusion matrix](confusion_matrix.png)\n")
             f.write(f"## Metrics\n")
-            f.write(f"- Accuracy {self.topn_accuracy(1) * 100}%\n")
-            f.write(f"- Precision {self.precision() * 100}%\n")
-            f.write(f"- Recall {self.recall() * 100}%\n")
+            f.write(f"- Accuracy {self.topn_accuracy(1) * 100:.3f}%\n")
+            f.write(f"- Precision {precision_score(self.ground_truths, self.predictions, average='weighted') * 100:.3f}%\n")
+            f.write(f"- Recall {recall_score(self.ground_truths, self.predictions, average='macro') * 100:.3f}%\n")
         self.save(f"{directory}/results.pkl")
 
 

@@ -1,5 +1,6 @@
 from typing import Callable, List
 from sklearn.naive_bayes import MultinomialNB
+import numpy as np
 
 import sdg
 from sdg.experiment import Classification

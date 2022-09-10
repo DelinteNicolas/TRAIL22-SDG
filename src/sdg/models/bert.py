@@ -18,7 +18,11 @@ class BertClassifier(Classifier):
             x = [x]
         scores = []
         for iinput, res in zip(x, self._classifier(x)):
-            scores.append(Classification(iinput, [r["score"] for r in res]))
+            # TODO: Dirty trick: Trained with 18 classes while there are actually 17 -> remove the first one
+            # Consequence: probabilities do not sum up to one !
+            probs = [r["score"] for r in res]
+            probs = probs[1:]
+            scores.append(Classification(iinput, probs))
         if len(scores) == 1:
             return scores[0]
         return scores

@@ -1,4 +1,4 @@
-from .constants import SDGS
+from .constants import SDGS, SDG_DICT
 from .utils import dataset
 from .training import fine_tune_bert
 from .experiment import Experiment
