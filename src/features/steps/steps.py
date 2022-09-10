@@ -3,16 +3,15 @@ from behave import given, when, then, step
 
 @given('I input "{text}"')
 def step_impl(context, text):
-    context.output = context.classifier(text)
+    context.output = context.classifier.classify(text)
     print(context.output)
 
-@given('the input is the verbatim definition of "{sdg}"')
-def step_impl(context, sdg):
-    context.expected_label = sdg
+@then('the model should be very confident that the input refers to SDG {n:d}')
+def step_impl(context, n: int):
+    assert context.output.label == n
+    assert context.output.class_predictions[n] >= 0.9
 
-@then('the model should be very confident that the label is "{sdg}"')
-def step_impl(context, sdg):
-    
-    assert context.output[0]['label'] == sdg
-    assert context.output[0]['score'] > 0.9
+@then(u'the model should be somewhat confident that the input does not refer to any SDG.')
+def step_impl(context):
+    assert context.output.confidence < 0.5
 

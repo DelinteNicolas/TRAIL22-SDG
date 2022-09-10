@@ -2,14 +2,15 @@ from typing import List, Tuple
 import torch
 from transformers import pipeline
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, PreTrainedTokenizer
+from sdg.constants import SDGS
 
 from sdg.experiment import Classification
 from .classifier import Classifier
 
 
 class BertClassifier(Classifier):
-    def __init__(self, labels: List[str], filename: str=None, device=-1):
-        Classifier.__init__(self, labels)
+    def __init__(self, filename: str=None, device=-1):
+        Classifier.__init__(self, SDGS)
         tk = AutoTokenizer.from_pretrained("bert-base-cased", device=device)
         if filename is None:
             filename = "DelinteNicolas/SDG_classifier_v0.0.1"
