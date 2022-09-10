@@ -7,27 +7,6 @@ from .classifier import Classifier
 from sdg.experiment import Classification
 
 
-def tf_idf_classifier(tokenizer: Callable[[str], str]=None) -> Tuple[MultinomialNB, TfidfVectorizer]:
-    """Returns the NaiveBayes classifier and the vectorizer"""
-    if tokenizer is None:
-        tokenizer = sdg.tokenizers.lemmatize_stem
-    train_x, train_y, _, _ = sdg.dataset.load_sdg()
-    train_corpus = [tokenizer(s) for s in train_x]
-    vectorizer = sdg.utils.get_vectorizer()
-    vectorized_train_x = vectorizer.fit_transform(train_corpus)
-    clf = MultinomialNB()
-    clf.fit(vectorized_train_x, train_y)
-
-    def classify(s: Union[str, List[str]]):
-        if isinstance(s, str):
-            s = [s]
-        s = vectorizer.transform([tokenizer(x) for x in s])
-        return clf.predict_proba(s)
-
-    return classify
-
-
-
 class NaiveBayesClassifier(Classifier):
     def __init__(self, labels: List[str], tokenizer: Callable[[str], str]=None):
         Classifier.__init__(self, labels)

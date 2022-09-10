@@ -5,8 +5,8 @@ if __name__ == "__main__":
     classifiers = [
         #("Random forest", sdg.models.RandomForestClassifier(sdg.SDGS)),
         #("Naive bayes (TF/IDF)", sdg.models.NaiveBayesClassifier(sdg.SDGS)),
-        #("Finetuned Bert", sdg.models.BertClassifier(sdg.SDGS, device=0)),
-        ("Zero shot", sdg.models.ZeroShotClassifier(sdg.SDGS, device=0)),
+        ("Finetuned Bert", sdg.models.BertClassifier(sdg.SDGS, device=0)),
+        #("Zero shot", sdg.models.ZeroShotClassifier(sdg.SDGS, device=0)),
     ]
     for name, clf in classifiers:
         print(name, clf.classify("However, with growing pressures on ecosystems, forests also need to adjust to changing conditions"))
