@@ -1,11 +1,11 @@
 Feature: Vocabulary and Parts of Speech (POS)
     I want the model to have the necessary vocabulary, and appropriately handle the impact of words with different parts of speech on the task.
 
-Scenario Outline: [MFT] When the input is the verbatim definition of an SDG, the prediction should be that SDG.
+Scenario Outline: [MFT] When the input clearly refers to an SDG, the prediction should be that SDG.
     Given I input "<text>"
     Then the model should be very confident that the input refers to SDG <n>
 
-    Examples:
+    Examples: Verbatim definitions of SDGs
         | n  | text                                                                                     |    
         | 1  | End poverty in all its forms everywhere.                                                 |
         | 2  | End hunger, achieve food security and improved nutrition and promote sustainable agriculture. |
@@ -30,26 +30,28 @@ Scenario Outline: [MDT] When the input does not refer to an SDG, the prediction 
     Then the model should be somewhat confident that the input does not refer to any SDG.
 
     Examples:
-        | n  | text                                                                                     |
-        | 1  | I'm poor right now.                                                                      |
-        | 1  | Oh, poor little thing.                                                                   |
-        | 2  | I’m hungry, let’s go to a restaurant.                                                    |
-        | 3  | I’m sick, I need to go to the doctor.                                                    |
-        | 4  | I’m going to school.                                                                     |
-        | 6  | I need to drink water.                                                                   |
-        | 6  | I need to take a shower.                                                                 |
-        | 7  | I need to turn on the lights.                                                            |
-        | 8  | I need to get a job.                                                                     |
-        | 9  | I need to build a house.                                                                 |
-        | 10 | I need to get a job.                                                                     |
-        | 11 | I need to go to the city.                                                                |
-        | 12 | I need to buy a new car.                                                                 |
-        | 13 | I need to turn on the air conditioner.                                                   |
-        | 14 | I need to go to the beach.                                                               |
-        | 15 | I need to go to the forest.                                                              |
-        | 16 | I am at peace.                                                                           |
-        | 17 | Let's do a partnership to sell petrol                                                    |
+        | text                                          |
+        | I'm poor right now.                           |
+        | Oh, poor little thing.                        |
+        | I’m hungry, let’s go to a restaurant.         |
+        | I’m sick, I need to go to the doctor.         |
+        | I’m going to school.                          |
+        | I need to drink water.                        |
+        | I need to take a shower.                      |
+        | I need to turn on the lights.                 |
+        | I need to get a job.                          |
+        | I need to build a house.                      |
+        | I need to get a job.                          |
+        | I need to go to the city.                     |
+        | I need to buy a new car.                      |
+        | I need to turn on the air conditioner.        |
+        | I need to go to the beach.                    |
+        | I need to go to the forest.                   |
+        | I am at peace.                                |
+        | Let's do a partnership to sell petrol         |
+        | I don't think I can the gas bill this month.  |
 
 
 # Scenario Outline: [MFT] When the input refers to a SDG with its number, the prediction should be that SDG.
+#     Given I input ""
 
