@@ -1,8 +1,5 @@
-import gradio as gr
 from spacy import displacy
-from transformers import pipeline
-from transformers import AutoTokenizer
-from transformers import AutoModelForSequenceClassification
+from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 from PyPDF2 import PdfReader
 
 reader = PdfReader("drive/MyDrive/TRAIL22/pdfs/temp.pdf")
