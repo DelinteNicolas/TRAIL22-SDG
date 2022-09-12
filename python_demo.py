@@ -45,7 +45,7 @@ def predict(text):
 
     for txt in tqdm(txtList):
         sdg = classifier(txt)
-        if sdg[0]['score'] > .5 and len(txt) > 10:
+        if sdg[0]['score'] > .9 and len(txt) > 10 and sdg[0]['label']!="Not a SDG":
             doc["ents"].append({"start": text.index(txt),
                                 "end": text.index(txt)+len(txt)+1,
                                 "label": sdg[0]['label']})
@@ -66,7 +66,7 @@ def predict(text):
 
 if __name__ == '__main__':
 
-    model_name_or_path = "DelinteNicolas/SDG_classifier_v0.0.1"
+    model_name_or_path = "DelinteNicolas/SDG_classifier_v0.0.2"
 
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name_or_path)
