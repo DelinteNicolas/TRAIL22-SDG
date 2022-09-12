@@ -3,7 +3,7 @@ Feature: Vocabulary and Parts of Speech (POS)
 
 Scenario Outline: [MFT] When the input clearly refers to an SDG, the prediction should be that SDG.
     Given I input "<text>"
-    Then the model should be very confident that the input refers to SDG <n>
+    Then SDG <n> should be the only assigned SDG
 
     Examples: Verbatim definitions of SDGs
         | n  | text                                                                                     |    
@@ -27,7 +27,7 @@ Scenario Outline: [MFT] When the input clearly refers to an SDG, the prediction 
 
 Scenario Outline: [MFT] When the input does not refer to an SDG, the prediction should not be an SDG.
     Given I input "<text>"
-    Then the model should be very confident that the input does not refer to any SDG.
+    Then no SDGs should be assigned
 
     Examples:
         | text                                          |
