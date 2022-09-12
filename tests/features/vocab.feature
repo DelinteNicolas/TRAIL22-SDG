@@ -25,9 +25,9 @@ Scenario Outline: [MFT] When the input clearly refers to an SDG, the prediction 
         | 16 | Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels. |
         | 17 | Strengthen the means of implementation and revitalize the global partnership for sustainable development. |
 
-Scenario Outline: [MDT] When the input does not refer to an SDG, the prediction should not be an SDG.
+Scenario Outline: [MFT] When the input does not refer to an SDG, the prediction should not be an SDG.
     Given I input "<text>"
-    Then the model should be somewhat confident that the input does not refer to any SDG.
+    Then the model should be very confident that the input does not refer to any SDG.
 
     Examples:
         | text                                          |

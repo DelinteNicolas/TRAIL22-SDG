@@ -22,6 +22,17 @@ class Classification:
         return np.argmax(self.class_predictions)
 
     @property
+    def assigned_labels(self, max_labels=3) -> List[int]:
+        """The labels of the thresholded predictions"""
+        for n in range(1, max_labels+1):
+            assigned = self.top_n_labels(n)
+            not_assigned = np.setdiff1d(np.arange(self.n_classes), assigned)
+            # if the sum of the confidence of all the top n labels is above the sum of the rest of the labels
+            if np.sum(self.class_predictions[assigned]) >= np.sum(self.class_predictions[not_assigned]):
+                return assigned
+        return []
+
+    @property
     def confidence(self) -> float:
         """The confidence of the prediction"""
         return self.class_predictions[self.label]
