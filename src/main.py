@@ -3,6 +3,7 @@ import sdg
 
 
 if __name__ == "__main__":
-    sdg.pdf_classification.annotate_pdf(sdg.models.BertClassifier(), "data/mouse.pdf")
+    clf = sdg.models.BertClassifier("DelinteNicolas/SDG_classifier_v0.0.1")
+    sdg.pdf_classification.annotate_pdf(clf, "data/mouse.pdf")
     exit()
     

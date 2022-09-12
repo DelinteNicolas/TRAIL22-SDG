@@ -307,3 +307,5 @@ cython_debug/
 .devcontainer
 .vscode
 poetry.lock
+saved_models
+binary17
