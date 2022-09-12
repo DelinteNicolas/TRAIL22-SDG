@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from typing import Callable, List
+from typing import List, Any
 import pickle
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from sklearn.metrics import ConfusionMatrixDisplay, precision_score, recall_score
+from sklearn.metrics import ConfusionMatrixDisplay, precision_score, recall_score, f1_score
 
 
 @dataclass
@@ -20,6 +20,11 @@ class Classification:
     def label(self) -> int:
         """The predicted label"""
         return np.argmax(self.class_predictions)
+
+    @property
+    def confidence(self) -> float:
+        """The considence score of the label"""
+        return self.class_predictions[self.label]
 
     @property
     def assigned_labels(self, max_labels=3) -> List[int]:
@@ -55,16 +60,16 @@ class Classification:
         return np.argpartition(self.class_predictions, -n)[-n:]
 
     def __repr__(self):
-        return f"SDG {self.sdg} ({self.class_predictions[self.label] * 100:.2f}%)"
+        return f"SDG {self.sdg} -- Label {self.label}  ({self.class_predictions[self.label] * 100:.2f}%)"
             
 
 @dataclass
 class Experiment:
     results: List[Classification]
     ground_truths: List[int]
-    clf: Callable[[str], List[float]]
+    clf: Any
 
-    def __init__(self, classifier: Callable[[str], List[float]]) -> None:
+    def __init__(self, classifier) -> None:
         self.results = []
         self.clf = classifier
         self.ground_truths = []
@@ -88,12 +93,6 @@ class Experiment:
                 n_correct += 1
         return n_correct / len(self.results)
 
-    def precision(self) -> float:
-        return 0.
-
-    def recall(self) -> float:
-        return 0.
-
     def confusion_matrix(self, filename: str):
         fig, ax = plt.subplots(figsize=(10, 5))
         ConfusionMatrixDisplay.from_predictions(self.ground_truths, self.predictions, ax=ax)
@@ -106,7 +105,17 @@ class Experiment:
     def save(self, name: str):
         """Save the experiment results in a pickle file"""
         with open(name, "wb") as f:
-            pickle.dump(self.results, f)
+            pickle.dump([self.results, self.ground_truths, self.clf.labels], f)
+
+    def misclassification_summary(self, filename: str, threshold: float=0.7):
+        with open(filename, "w", encoding="utf8") as file:
+            file.write(f"# Wrongly classified lines with confidence >= {threshold}\n")
+            for res, label in zip(self.results, self.ground_truths):
+                if res.label != label and res.confidence >= threshold:
+                    file.write(f"### {res.input_data}\n")
+                    file.write(f"- Prediction {res.label} (SDG {res.sdg})\n")
+                    file.write(f"- Ground truth {label} (SDG {label + 1})\n")
+                    file.write(f"- Confidence {res.confidence*100:.3f}\n")
 
     def summary(self, directory: str):
         if not directory.startswith("summary/"):
@@ -115,13 +124,17 @@ class Experiment:
         
         self.confusion_matrix(os.path.join(directory,"confusion_matrix.png"))
         with open(os.path.join(directory, "summary.md"), "w", encoding="utf8") as f:
-            f.write(f"# Experience summary for {self.clf.__class__}\n")
+            f.write(f"# Experience summary for {self.clf.__class__.__name__}\n")
+            f.write(f"## Labels \n")
+            for i, label in enumerate(self.clf.labels):
+                f.write(f"{i}. {label}\n")    
             f.write(f"## Confusion matrix\n")
             f.write(f"![confusion matrix](confusion_matrix.png)\n")
             f.write(f"## Metrics\n")
             f.write(f"- Accuracy {self.topn_accuracy(1) * 100:.3f}%\n")
             f.write(f"- Precision {precision_score(self.ground_truths, self.predictions, average='weighted') * 100:.3f}%\n")
             f.write(f"- Recall {recall_score(self.ground_truths, self.predictions, average='macro') * 100:.3f}%\n")
+            f.write(f"- F1 {f1_score(self.ground_truths, self.predictions) * 100:.3f}\n")
         self.save(f"{directory}/results.pkl")
 
 
@@ -130,11 +143,15 @@ class Experiment:
         return [r.label for r in self.results]
 
     @staticmethod
-    def load(name: str) -> "Experiment":
-        with open(name, "rb") as f:
-            results = pickle.load(f)
-        exp = Experiment(lambda *_: print("Mock classifier!"))
+    def load(file_name: str) -> "Experiment":
+        with open(file_name, "rb") as f:
+            results, ground_truths, labels = pickle.load(f)
+        def clf(_):
+            pass
+        clf.labels = labels
+        exp = Experiment(clf)
         exp.results = results
+        exp.ground_truths = ground_truths
         return exp
 
     def __len__(self):
