@@ -6,20 +6,29 @@ import sdg
 
 
 def before_all(context):
+    classifier_name = load_classifier_name(context)
+    if classifier_name == 'bert':
+        version = load_version(context)
+        context.classifier = BertClassifier(filename=f"DelinteNicolas/SDG_classifier_v{version}")
+    elif classifier_name == 'random-forest':
+        context.classifier = RandomForestClassifier()
+    elif classifier_name == 'naive-bayes':
+        context.classifier = NaiveBayesClassifier()
+    elif classifier_name == 'zero-shot':
+        context.classifier = ZeroShotClassifier(list(sdg.SDG_DICT.values()))
+    else:
+        raise ValueError(f"Unknown classifier {classifier_name}")
+
+def load_version(context):
+    try:
+        version: str = context.config.userdata['version']
+    except KeyError:
+        version = '0.0.4'
+    return version
+
+def load_classifier_name(context):
     try:
         cls: str = context.config.userdata['cls']
     except KeyError:
-        cls = 'bert0.2'
-    if cls == 'bert0.1':
-        context.classifier = BertClassifier(filename="DelinteNicolas/SDG_classifier_v0.0.1")
-    elif cls == 'bert0.2':
-        context.classifier = BertClassifier(filename="DelinteNicolas/SDG_classifier_v0.0.2")
-    elif cls == 'random-forest':
-        context.classifier = RandomForestClassifier()
-    elif cls == 'naive-bayes':
-        context.classifier = NaiveBayesClassifier()
-    elif cls == 'zero-shot':
-        context.classifier = ZeroShotClassifier(list(sdg.SDG_DICT.values()))
-    else:
-        raise ValueError(f"Unknown classifier {cls}")
-    context.config.outfiles = [cls]
+        cls = 'bert'
+    return cls

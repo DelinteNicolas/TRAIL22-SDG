@@ -27,13 +27,15 @@ class Classification:
         return self.class_predictions[self.label]
 
     def assigned_sdgs(self, max_labels=2) -> List[int]:
-        """Retrieve the combination of the n best sdgs whose sum of confidence scores is greater than the sum of confidence scores of unassigned sdgs."""
+        """
+        The smallest set of SDGs for which the sum of predictions is greater than or equal to the sum of predictions of the other SDGs.
+        Return an empty list the length exceeds max_labels.
+        """
         for n in range(1, max_labels+1):
             assigned = self.top_n_labels(n)
             unassigned = [i for i in range(len(self.class_predictions)) if i not in assigned]
             assigned_predictions = [self.class_predictions[i] for i in assigned]
             unassigned_predictions = [self.class_predictions[i] for i in unassigned]
-            # if the sum of the confidence of the assigned labels are above the sum of the confidence of the unassigned labels
             if sum(assigned_predictions) >= sum(unassigned_predictions):
                 return [self.__to_sdg(i) for i in assigned]
         return []

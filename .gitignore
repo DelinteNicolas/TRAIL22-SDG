@@ -310,3 +310,5 @@ poetry.lock
 saved_models
 binary17
 tests/reports/
+
+src/html.output
