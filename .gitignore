@@ -306,3 +306,6 @@ cython_debug/
 ## User added
 .devcontainer
 .vscode
+poetry.lock
+saved_models
+binary17

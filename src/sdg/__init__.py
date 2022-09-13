@@ -9,3 +9,4 @@ from . import training
 from . import constants
 from . import utils
 from .utils import tokenizers
+from . import pdf_classification
