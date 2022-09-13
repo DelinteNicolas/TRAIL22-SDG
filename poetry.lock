@@ -69,6 +69,17 @@ develop = ["coverage", "pytest (>=3.0)", "pytest-cov", "tox", "invoke (>=0.21.0)
 docs = ["sphinx (>=1.6)", "sphinx-bootstrap-theme (>=0.6)"]
 
 [[package]]
+name = "behave-html-formatter"
+version = "0.9.10"
+description = "HTML formatter for Behave"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+behave = "*"
+
+[[package]]
 name = "blis"
 version = "0.7.8"
 description = "The Blis BLAS-like linear algebra library, as a self-contained C-extension."
@@ -1031,7 +1042,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "693f431902547851b7c37a50e564b7bbadcc7489643b2159c67d2ccd04829dcc"
+content-hash = "07bd85eaa6fde9b53f68b083307b202911cf518629d661aa8d0c4bf5b7049eb2"
 
 [metadata.files]
 aiohttp = []
@@ -1039,6 +1050,7 @@ aiosignal = []
 async-timeout = []
 attrs = []
 behave = []
+behave-html-formatter = []
 blis = []
 catalogue = []
 certifi = [
