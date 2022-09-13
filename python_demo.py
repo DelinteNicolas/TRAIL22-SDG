@@ -13,23 +13,23 @@ from transformers import AutoModelForSequenceClassification
 
 def predict(text):
 
-    colors = {"SDG1: No Poverty": "#eb1c2d",
-              "SDG10: Reduced Inequality": "#ff45aa",
-              "SDG11: Sustainable Cities and Communities": "#f99d26",
-              "SDG12: Responsible Consumption and Production": "#cf8d2a",
-              "SDG13: Climate Action": "#66a559",
-              "SDG14: Life Below Water": "#4dc4ff",
-              "SDG15: Life on Land": "#48ff5a",
-              "SDG16: Peace and Justice Strong Institutions": "#4ab7ff",
-              "SDG17: Partnerships to achieve the Goal": "#448aff",
-              "SDG2: Zero Hunger": "#D3A029",
-              "SDG3: Good Health and Well-being": "#43ce6b",
-              "SDG4: Quality Education": "#c31f33",
-              "SDG5: Gender Equality": "#ef402b",
-              "SDG6: Clean Water and Sanitation": "#00aed9",
-              "SDG7: Affordable and Clean Energy": "#fdb713",
-              "SDG8: Decent Work and Economic Growth": "#ff3b70",
-              "SDG9: Industry, Innovation and Infrastructure": "#f36d25"}
+    colors = {"SDG1: No Poverty": "#e16f78",
+              "SDG10: Reduced Inequality": "#e26cac",
+              "SDG11: Sustainable Cities and Communities": "#e5b270",
+              "SDG12: Responsible Consumption and Production": "#e3b36b",
+              "SDG13: Climate Action": "#86df73",
+              "SDG14: Life Below Water": "#6fbce2",
+              "SDG15: Life on Land": "#70e47b",
+              "SDG16: Peace and Justice Strong Institutions": "#68aedc",
+              "SDG17: Partnerships to achieve the Goal": "#7099de",
+              "SDG2: Zero Hunger": "#e6c67b",
+              "SDG3: Good Health and Well-being": "#72dd91",
+              "SDG4: Quality Education": "#e1707d",
+              "SDG5: Gender Equality": "#e17669",
+              "SDG6: Clean Water and Sanitation": "#78cce1",
+              "SDG7: Affordable and Clean Energy": "#e2bf6e",
+              "SDG8: Decent Work and Economic Growth": "#e07391",
+              "SDG9: Industry, Innovation and Infrastructure": "#e49971"}
 
     doc = {
         "text": text,
@@ -45,7 +45,7 @@ def predict(text):
 
     for txt in tqdm(txtList):
         sdg = classifier(txt)
-        if sdg[0]['score'] > .9 and len(txt) > 10 and sdg[0]['label']!="Not a SDG":
+        if sdg[0]['score'] > .9 and len(txt) > 15 and sdg[0]['label'] != "Not a SDG":
             doc["ents"].append({"start": text.index(txt),
                                 "end": text.index(txt)+len(txt)+1,
                                 "label": sdg[0]['label']})
