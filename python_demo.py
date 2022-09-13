@@ -66,7 +66,7 @@ def predict(text):
 
 if __name__ == '__main__':
 
-    model_name_or_path = "DelinteNicolas/SDG_classifier_v0.0.2"
+    model_name_or_path = "DelinteNicolas/SDG_classifier_v0.0.4"
 
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name_or_path)
