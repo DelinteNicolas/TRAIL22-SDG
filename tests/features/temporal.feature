@@ -1,10 +1,10 @@
 Feature: Temporal
     I want the model to understand the order of events
-    So that it only assigned SDGs in the presents and not in the past
 
 Scenario Outline: [MFT] When the goal changes over time, the present should prevail.
     Given I input "We used to aim to <past_text> but now we aim to <present_text>"
-    Then SDG <n> should be the only assigned SDG
+    Then SDG <n> should be part of the initial SDGs assigned
+    And the number of initial SDGs assigned should be 1
 
     Examples:
         | past_text | present_text | n |
