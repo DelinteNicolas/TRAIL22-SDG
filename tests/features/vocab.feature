@@ -25,31 +25,36 @@ Scenario Outline: [MFT] When the input clearly refers to an SDG, the prediction 
         | 16 | Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels. |
         | 17 | Strengthen the means of implementation and revitalize the global partnership for sustainable development. |
 
-Scenario Outline: [MFT] When the input does not refer to an SDG, the prediction should not be an SDG.
+Scenario Outline: [MFT] When an input is purely informative, the prediction should not be any SDG.
     Given I input "<text>"
     Then no SDGs should be assigned
 
     Examples:
         | text                                          |
-        | I'm poor right now.                           |
-        | Oh, poor little thing.                        |
-        | I’m hungry, let’s go to a restaurant.         |
-        | I’m sick, I need to go to the doctor.         |
-        | I’m going to school.                          |
-        | I need to drink water.                        |
-        | I need to take a shower.                      |
-        | I need to turn on the lights.                 |
-        | I need to get a job.                          |
-        | I need to build a house.                      |
-        | I need to get a job.                          |
-        | I need to go to the city.                     |
-        | I need to buy a new car.                      |
-        | I need to turn on the air conditioner.        |
-        | I need to go to the beach.                    |
-        | I need to go to the forest.                   |
-        | I am at peace.                                |
-        | Let's do a partnership to sell petrol         |
-        | I don't think I can the gas bill this month.  |
+        | Poverty is the state of having few material possessions or little income. | 
+        | I am so hungry right now.     |
+        | Namur is a city Belgium. |
+        | The meaning of health has evolved over time. |
+        # | I'm poor right now.                           |
+        # | Oh, poor little thing.                        |
+        # | I’m hungry, let’s go to a restaurant.         |
+        # | I’m sick, I need to go to the doctor.         |
+        # | I’m going to school.                          |
+        # | I need to drink water.                        |
+        # | I need to take a shower.                      |
+        # | I need to turn on the lights.                 |
+        # | I need to get a job.                          |
+        # | I need to build a house.                      |
+        # | I need to get a job.                          |
+        # | I need to go to the city.                     |
+        # | I need to buy a new car.                      |
+        # | I need to turn on the air conditioner.        |
+        # | I need to go to the beach.                    |
+        # | I need to go to the forest.                   |
+        # | I am at peace.                                |
+        # | Let's do a partnership to sell petrol         |
+        # | I don't think I can the gas bill this month.  |
+        
 
 
 # Scenario Outline: [MFT] When the input refers to a SDG with its number, the prediction should be that SDG.

@@ -18,8 +18,10 @@ def step_impl(context):
 
 @then(u'SDG {n:d} should not be in the assigned SDGs anymore')
 def step_impl(context, n: int):
-    print(context.pre_output.assigned_sdgs(), context.post_output.assigned_sdgs())
-    assert context.post_output.assigned_sdgs() == [i for i in context.pre_output.assigned_sdgs() if i not in [n]]
+    pre_assigned_wo_n = [sdg for sdg in context.pre_output.assigned_sdgs() if sdg != n]
+    print(context.post_output.assigned_sdgs(), pre_assigned_wo_n)
+    assert context.post_output.assigned_sdgs() == pre_assigned_wo_n
+
 
 @then(u'SDG {n:d} should be the only assigned SDG')
 def step_impl(context, n: int):
