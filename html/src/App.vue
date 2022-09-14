@@ -1,19 +1,14 @@
 <template>
-  <main class="row">
-    <FilePreview />
-    <StatsComponent />
-  </main>
+  <FilePreview />
 </template>
 
 <script>
-import StatsComponent from './components/StatsComponent.vue'
 import FilePreview from './components/FilePreview.vue'
 
 
 export default {
   name: 'App',
   components: {
-    StatsComponent,
     FilePreview
   }
 }
