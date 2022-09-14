@@ -308,4 +308,4 @@ cython_debug/
 .vscode
 poetry.lock
 saved_models
-binary17
+tmp
