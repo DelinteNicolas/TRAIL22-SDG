@@ -40,8 +40,8 @@ def get_html(pdf_location: str) -> Tuple[str, List[str]]:
     content = content.replace("\n", " ")
     content = re.sub(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)', '#', content)
     soup = BeautifulSoup(content)
-    # for a in soup.select("a"):
-    #     a.unwrap()
+    for a in soup.select("a"):
+        a.unwrap()
     for img in soup.select("img"):
         img.unwrap()
     body = str(soup.body)
@@ -52,7 +52,7 @@ def get_html(pdf_location: str) -> Tuple[str, List[str]]:
     for i, s in enumerate(sentences):
         data = BeautifulSoup(s)
         to_analyze.append(data.text.strip())
-        html += f'<div id="id-{i}">{s}</div>'
+        html += f'<div id="id-{i}">{s.strip()}</div>'
     return html, to_analyze
     text = text.replace("\n", " ")
     text = re.sub(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)', '.', text)

@@ -1,4 +1,5 @@
 import json
+from typing import List
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from time import time
@@ -13,6 +14,7 @@ cache = {}
 @cross_origin()
 def upload_file():
     file = request.files["document"]
+    os.makedirs("tmp", exist_ok=True)
     saved_filename = os.path.join("tmp", f"{time()}-{file.filename}")
     file.save(saved_filename)
     html, to_analyze = sdg.pdf_classification.get_html(saved_filename)
@@ -38,10 +40,13 @@ def get_models():
 @cross_origin()
 def analyze():
     json_data = request.json
-    sentences = cache[json_data["filename"]]
+    sentences: List[str] = cache[json_data["filename"]]
     classifier = sdg.models.get_model(json_data["model"])
     results = classifier(sentences)
-    return json.dumps([r.to_json() for r in results])
+    return {
+        "classifications": [r.to_json() for r in results],
+        "labels": classifier.labels
+    }
 
 
 def run(port=5000):
