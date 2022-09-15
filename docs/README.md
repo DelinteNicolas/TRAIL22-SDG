@@ -17,10 +17,10 @@ A web app containing the classification model developped is available at [Huggin
 
 ## Python demo
 
-A pyhton-based demo is also available in 'python_demo.py' it can be executed with the following command
+A pyhton-based demo is also available in ```python_demo.py``` it can be executed with the following command
 
 ```
-python python_demo.py "path/to/pdf_or_txt
+python python_demo.py "path/to/pdf_or_txt"
 ```
 
 ## Application
