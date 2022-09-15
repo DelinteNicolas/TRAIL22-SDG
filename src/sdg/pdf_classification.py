@@ -1,11 +1,11 @@
-from typing import List
+from typing import List, Tuple
 import sdg
 from spacy import displacy
 import re
 import os
 import subprocess
+from bs4 import BeautifulSoup
 from tqdm import tqdm
-
 
 COLOURS = [
     "#eb1c2d", "#ff45aa", "#f99d26", "#cf8d2a", "#66a559", 
@@ -24,9 +24,40 @@ def _get_sentences(pdf_location: str) -> List[str]:
     ])
     with open("tmp.txt", "r", encoding="utf8") as f:
         text = f.read()
+        text = text.replace("\n", " ")
         text = re.sub(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)', '.', text)
     os.remove("tmp.txt")
     return re.split(r'[;.\?!]', text)
+
+def get_html(pdf_location: str) -> Tuple[str, List[str]]:
+    _ = subprocess.call([
+        "pdftohtml",
+        pdf_location,
+        "tmp/tmp.html"
+    ])
+    with open("tmp/tmps.html", "r") as f:
+        content = f.read()
+    content = content.replace("\n", " ")
+    content = re.sub(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)', '#', content)
+    soup = BeautifulSoup(content)
+    for a in soup.select("a"):
+        a.unwrap()
+    for img in soup.select("img"):
+        img.unwrap()
+    body = str(soup.body)
+    
+    sentences = re.split(r'[;.\?!]', body)
+    html = ""
+    to_analyze = []
+    for i, s in enumerate(sentences):
+        data = BeautifulSoup(s)
+        to_analyze.append(data.text.strip())
+        html += f'<div id="id-{i}">{s.strip()}</div>'
+    return html, to_analyze
+    text = text.replace("\n", " ")
+    text = re.sub(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)', '.', text)
+    # os.remove("tmp.txt")
+    # return re.split(r'[;.\?!]', text)
 
 
 def annotate_pdf(classifier: sdg.models.Classifier, filename: str):

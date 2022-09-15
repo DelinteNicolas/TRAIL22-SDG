@@ -55,11 +55,10 @@ def train_17_classifiers(save_directory: str, n_epochs: int):
         "SDG16: Peace and Justice Strong Institutions",
         "SDG17: Partnerships to achieve the Goal"
     ]
-    models = []
     for i, label in enumerate(labels):
         dataset = load_sdg_dataset(tokenizer)
         model_dataset = to_binary(dataset, i + 1)
-        model = AutoModelForSequenceClassification.from_pretrained(base_model, num_labels=2, id2label={0: "None", 1: label})
+        model = AutoModelForSequenceClassification.from_pretrained(base_model, num_labels=2, id2label={0: "None", 1: label}, device=-1)
         training_args = TrainingArguments(
             output_dir="test_trainer", 
             evaluation_strategy="epoch",
@@ -75,7 +74,6 @@ def train_17_classifiers(save_directory: str, n_epochs: int):
         )
 
         trainer.train()
-        models.append(model)
         model.save_pretrained(os.path.join(save_directory, f"model_sdg_{i}"))
     
     

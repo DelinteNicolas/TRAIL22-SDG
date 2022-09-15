@@ -67,6 +67,15 @@ class Classification:
     def __repr__(self):
         return f"SDG {self.sdg} -- Label {self.label}  ({self.class_predictions[self.label] * 100:.2f}%)"
             
+    def to_json(self):
+        return {
+            "inputData": self.input_data,
+            "classPredictions": list(self.class_predictions),
+            "confidence": self.confidence,
+            "label": int(self.label),
+            "sdg": int(self.sdg)
+        }
+        
 
 @dataclass
 class Experiment:
