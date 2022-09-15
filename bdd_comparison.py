@@ -5,7 +5,9 @@ import datetime
 import os
 
 def report(index_path, model, version="0.0.5"):
-    dir_name = model if model != "bert" else f"{model}-{version}"
+    dir_name = model
+    if model == 'bert' or model == 'naive-bayes':
+        dir_name += f"-{version}"
     dir_path = os.path.join(index_path, dir_name)
     os.mkdir(dir_path)
     print(f"\n***** {dir_name.upper()} *****\n")
@@ -31,6 +33,6 @@ if __name__ ==  "__main__":
     report(index_path, "bert", "0.0.5") # class 0 using GLUE
     report(index_path, "bert", "0.0.4") # class 0 using superGLUE
     report(index_path, "bert", "0.0.2") # no class 0
-    report(index_path, "naive-bayes")
     report(index_path, "naive-bayes", "prior")
+    report(index_path, "naive-bayes", "no-prior")
     report(index_path, "random-forest")

@@ -25,6 +25,9 @@ datasets = "^2.4.0"
 nltk = "^3.7"
 torch = "^1.12.1"
 behave-html-formatter = "^0.9.10"
+bs4 = "^0.0.1"
+Flask = "^2.2.2"
+Flask-Cors = "^3.0.10"
 
 [tool.poetry.dev-dependencies]
 

@@ -14,7 +14,7 @@ def before_all(context):
         context.classifier = RandomForestClassifier()
     elif classifier_name == 'naive-bayes':
         version = load_version(context, default='prior')
-        context.classifier = NaiveBayesClassifier()
+        context.classifier = NaiveBayesClassifier(version == 'prior')
     elif classifier_name == 'zero-shot':
         context.classifier = ZeroShotClassifier(list(sdg.SDG_DICT.values()))
     else:

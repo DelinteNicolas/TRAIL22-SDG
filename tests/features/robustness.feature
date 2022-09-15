@@ -1,5 +1,5 @@
 Feature: Robustness
-    I want the model to be robust to typos, irrelevant changes, etc
+    I want the model to understand a text correctly, even if there are typos, irrelevant changes, etc.
 
 Scenario Outline: [INV] Making a typo should not change the prediction
     Given I input "<text>"

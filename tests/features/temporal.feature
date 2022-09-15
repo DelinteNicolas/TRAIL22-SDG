@@ -1,14 +1,13 @@
 Feature: Temporal
-    I want the model to understand the order of events
+    I want the model to understand the order of events correctly.
 
 Scenario Outline: [DIR] Switching the order of events should change the prediction
     Given I input "We used to aim to <text1> but now we aim to <text2>"
-    When I switch the temporality as "We used to aim to <text1> but now we aim to <text2>"
-    Then SDG <n1> should be part of the initial SDGs assigned
+    When I switch the temporality as "We used to aim to <text2> but now we aim to <text1>"
+    Then the initial SDGs assigned should be different than the final SDGs assigned
     And the number of initial SDGs assigned should be 1
-    And SDG <n2> should not be part of the final SDGs assigned
     And the number of final SDGs assigned should be 1
-
+    
     Examples:
         | text1 | text2 | n1 | n2 |
         | reduce food waste | eradicate extreme poverty | 2 | 1 |

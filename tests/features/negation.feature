@@ -1,5 +1,5 @@
 Feature: Negation
-    I want the model to understand negation
+    I want the model to understand the impact of negation correctly.
 
 Scenario Outline: [DIR] When I negate a sentence, the model should not assign a SDG
     Given I input "<text>"

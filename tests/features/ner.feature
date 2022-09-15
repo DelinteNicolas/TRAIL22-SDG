@@ -1,5 +1,5 @@
 Feature: Named Entity Recognition
-    I want the model to be robust to named entity
+    I want the model to understand named entities correctly.
 
 Scenario Outline: [INV] Switching locations should not change predictions.
     Given I input "<text>"

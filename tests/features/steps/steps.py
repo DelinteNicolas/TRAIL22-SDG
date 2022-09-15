@@ -42,7 +42,18 @@ def step_impl(context, n: int):
     print(f"[Initial] Text: {context.initial_text} => SDGs: {context.initial_sdgs}")
     assert len(context.initial_sdgs) == n
 
+@then(u'the number of final SDGs assigned should be {n:d}')
+def step_impl(context, n: int):
+    print(f"[Final] Text: {context.final_text} => SDGs: {context.final_sdgs}")
+    assert len(context.final_sdgs) == n
+
 @then(u'SDG {n:d} should not be part of the final SDGs assigned')
 def step_impl(context, n: int):
     print(f"[Final] Text: {context.final_text} => SDGs: {context.final_sdgs}")
     assert n not in context.final_sdgs
+
+@then(u'the initial SDGs assigned should be different than the final SDGs assigned')
+def step_impl(context):
+    print(f"[Initial] Text: {context.initial_text} => SDGs: {context.initial_sdgs}")
+    print(f"[Final] Text: {context.final_text} => SDGs: {context.final_sdgs}")
+    assert context.initial_sdgs != context.final_sdgs

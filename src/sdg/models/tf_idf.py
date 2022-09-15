@@ -8,7 +8,7 @@ from .classifier import Classifier
 
 
 class NaiveBayesClassifier(Classifier):
-    def __init__(self, tokenizer: Callable[[str], str] = None, with_prior=True):
+    def __init__(self, with_prior=True, tokenizer: Callable[[str], str] = None):
         Classifier.__init__(self, sdg.SDGS)
         if tokenizer is None:
             tokenizer = sdg.tokenizers.lemmatize_stem

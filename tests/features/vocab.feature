@@ -1,5 +1,5 @@
 Feature: Vocabulary and Parts of Speech (POS)
-    I want the model to appropriately handle the impact of words with different parts of speech on the task.
+    I want the model to understand the impact of words correctly.
 
 Scenario Outline: [MFT] When the input refers to an SDG, the prediction should be that SDG.
     Given I input "<text>"
