@@ -10,7 +10,7 @@ Scenario Outline: [MFT] When the input refers to an SDG, the prediction should b
         | n  | text |
         | 1  | Its seven associated targets aims, among others, to eradicate extreme poverty. |
         | 2  | We will reduce food waste. |
-        | 3  | We will reduce air pollution. |
+        | 3  | We aim to halve the number of deaths and injuries from road traffic accidents. |
         | 4  | We will build schools for all. |
         | 5  | This should reduce salary inequality between gender. |
         | 6  | We will reduce water pollution. | 
@@ -20,13 +20,13 @@ Scenario Outline: [MFT] When the input refers to an SDG, the prediction should b
         | 10 | We aim to reduce inequality. |
         | 11 | Another interesting aspect of the city of Copenhagen is that two thirds of its hotels are eco-certified, which means that they meet the highest standards for sustainable energy, food and design. |
         | 12 | We (Countries) commit to making fundamental changes in the way that our societies produce and consume goods and services. |
-        | 13 | We aim to be carbon neutral by 2050. |
-        | 14 | TeamSeas is a global campaign to raise $30M to remove 30M pounds of plastic and trash from our ocean, rivers and beaches.
+        | 13 | The European Union expresses its commitment to take urgent action to combat climate change. |
+        | 14 | TeamSeas is a global campaign to raise $30M to remove 30M pounds of plastic and trash from our ocean, rivers and beaches. |
         | 15 | The Sustainable Development Goal 15 of the 2030 Agenda for Sustainable Development is devoted to “protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss”. |
         | 16 | We will reduce corruption. |
         | 17 | Capacity building activities are also aimed at strengthening and maintaining the capabilities of states and societies to design and implement strategies that minimize the negative impacts of current social, economic and environmental crises and emerging challenges. |
 
-Scenario Outline: [MFT] When an input do not refer to an SDG, the prediction should not be any SDG.
+Scenario Outline: [MFT] When the input does not refer to an SDG, the prediction should not be any SDG.
     Given I input "<text>"
     Then no SDGs should be assigned
 
