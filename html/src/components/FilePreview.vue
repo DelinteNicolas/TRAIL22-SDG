@@ -144,4 +144,8 @@ export default {
 sentence {
     border-radius: 5%;
 }
+.scroll-y {
+    overflow-y: scroll;
+    position: absolute;
+}
 </style>

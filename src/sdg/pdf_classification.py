@@ -36,6 +36,11 @@ def _get_sentences(pdf_location: str) -> List[str]:
 
 def save_image_names(soup: BeautifulSoup) -> Tuple[BeautifulSoup, Dict[str, str]]:
     translations = {}
+    for file in os.listdir("tmp"):
+        if file.endswith("jpg") or file.endswith("png"):
+            src = os.path.join("tmp", file)
+            dst = os.path.join("html", "public", "tmp_images", file)
+            shutil.move(src, dst)
     for img in soup.select("img"):
         timestamp = f"{time_ns()}"
         img_location = img['src'].replace("tmp/", "tmp_images/")

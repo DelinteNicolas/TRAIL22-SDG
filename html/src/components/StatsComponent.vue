@@ -14,14 +14,6 @@ Chart.register(...registerables);
 
 export default {
     components: { Doughnut },
-    data() {
-        return {
-            debouncedUpdate: null,
-            chartOptions: {
-                responsive: true
-            }
-        }
-    },
     props: {
         colors: Array,
         classifications: Array,
@@ -50,7 +42,7 @@ export default {
             const histo = new Array(this.nLabels + 1).fill(0);
             this.classifications.forEach(clf => {
                 if (clf.confidence * 100 >= this.threshold) {
-                    histo[clf.sdg]++;
+                    histo[clf.label]++;
                 }
             });
             return histo;
