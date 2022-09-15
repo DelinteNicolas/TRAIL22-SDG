@@ -9,4 +9,18 @@ The goal of the SDG coding challenge is to implement machine learning approaches
   <img src="https://user-images.githubusercontent.com/70629561/188598571-b4962be3-1aa1-4d57-b2b8-7cc473e6afd4.png"
 </p>
 
-An app containing the classification model developped is available at [Hugging Face](https://huggingface.co/spaces/DelinteNicolas/SDG).
+## Tests
+
+## HuggingFace demo
+
+A web app containing the classification model developped is available at [Hugging Face](https://huggingface.co/spaces/DelinteNicolas/SDG).
+
+## Python demo
+
+A python-based demo is also available in ```python_demo.py```, it takes a .pdf/.txt file as input and outputs an .html file with sentences highlighted with their corresponding SDG. It can be executed with the following command
+
+```
+python python_demo.py "path/to/pdf_or_txt"
+```
+
+## Application
