@@ -26,13 +26,34 @@ class Classification:
         """The considence score of the label"""
         return self.class_predictions[self.label]
 
+    def assigned_sdgs(self, max_labels=2) -> List[int]:
+        """
+        The smallest set of SDGs for which the sum of predictions is greater than or equal to the sum of predictions of the other SDGs.
+        Return an empty list the length exceeds max_labels.
+        """
+        for n in range(1, max_labels+1):
+            assigned = self.top_n_labels(n)
+            unassigned = [i for i in range(len(self.class_predictions)) if i not in assigned]
+            assigned_predictions = [self.class_predictions[i] for i in assigned]
+            unassigned_predictions = [self.class_predictions[i] for i in unassigned]
+            if sum(assigned_predictions) >= sum(unassigned_predictions):
+                return [self.__to_sdg(i) for i in assigned]
+        return []
+
+    @property
+    def confidence(self) -> float:
+        """The confidence of the prediction"""
+        return self.class_predictions[self.label]
+
+    def __to_sdg(self, label: int) -> int:
+        if self.n_classes == 17:
+            return label + 1
+        return label
+
     @property
     def sdg(self) -> int:
         """The SDG corresponding to the label"""
-        sdg = self.label
-        if self.n_classes == 17:
-            sdg += 1
-        return sdg
+        return self.__to_sdg(self.label)
 
     @property
     def n_classes(self) -> int:
@@ -41,7 +62,7 @@ class Classification:
 
     def top_n_labels(self, n: int) -> List[int]:
         """Retrieve the top n labels (unordered)"""
-        return np.argpartition(self.class_predictions, -n)[-n:]
+        return list(np.argpartition(self.class_predictions, -n)[-n:])
 
     def __repr__(self):
         return f"SDG {self.sdg} -- Label {self.label}  ({self.class_predictions[self.label] * 100:.2f}%)"

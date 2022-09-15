@@ -6,13 +6,13 @@ from .classifier import Classifier
 
 
 class RandomForestClassifier(Classifier):
-    def __init__(self, tokenizer: Callable[[str], str]=None):
+    def __init__(self, random_state=None, tokenizer: Callable[[str], str]=None):
         Classifier.__init__(self, sdg.SDGS)
         if tokenizer is None:
             tokenizer = sdg.tokenizers.lemmatize_stem
         self.tokenizer = tokenizer
         self.vectorizer = sdg.utils.get_vectorizer()
-        self.classifier = ensemble.RandomForestClassifier(n_estimators=100)
+        self.classifier = ensemble.RandomForestClassifier(n_estimators=100, random_state=random_state)
         train_x, train_y, _, _ = sdg.dataset.load_sdg()
         self.train(train_x, train_y)
         
