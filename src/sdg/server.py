@@ -10,6 +10,7 @@ app = Flask(__name__)
 CORS(app)
 cache = {}
 
+
 @app.route("/document/upload", methods=["POST"])
 @cross_origin()
 def upload_file():
@@ -24,11 +25,6 @@ def upload_file():
         "html": html
     }
 
-
-@app.route("/model", methods=["POST"])
-def add_model(model_name):
-    print(f"Adding {model_name} to the models")
-    return "OK"
 
 @app.route("/models")
 @cross_origin()
@@ -49,5 +45,5 @@ def analyze():
     }
 
 
-def run(port=5000):
-    app.run(port=port, debug=True)
+def run(port=5000, debug=False):
+    app.run(port=port, debug=debug)

@@ -22,12 +22,18 @@
                 </div>
             <input type="range" class="form-range" v-model.number="threshold">
             <button type="button" class="btn btn-success" @click="requestAnalysis"
-                :disabled="filename == null && selectedModel == null">
+                :disabled="pdf_filename == null || selectedModel == null">
                 Analyze
-                <i class="fa fa-play"></i>
+                <i v-if="requesting" class="fa fa-spinner fa-spin"></i>
+                <i v-else class="fa fa-play"></i>
+
             </button>
             </form>
-            <div class="col-6 text-start text-wrap" id="preview"></div>
+            <div class="col-6 text-start text-wrap" ref="preview">
+                <div class="text-center" v-if="pdf_filename == null">
+                    Import a PDF to have a preview
+                </div>
+            </div>
             <StatsComponent :labels="labels" :colors="COLORS" :classifications="classifications" :threshold="threshold" />
             </main>
 </template>
@@ -37,19 +43,18 @@
 import { Tooltip } from "bootstrap";
 import StatsComponent from "./StatsComponent.vue";
 
-
 export default {
     data() {
         return {
             threshold: 60,
-            filename: null,
             selectedModel: null,
             models: [],
-            preview: null,
             classifications: [],
             labels: [],
             thresholdDebounce: null,
-            COLORS: ["#BBBBBB", "#e16f78", "#e6c67b", "#72dd91", "#e1707d", "#e17669", "#78cce1", "#e2bf6e", "#e07391", "#e49971", "#e26cac", "#e5b270", "#e3b36b", "#86df73", "#6fbce2", "#70e47b", "#68aedc", "#7099de"]
+            pdf_filename: "",
+            requesting: false,
+            COLORS: ["#e16f78", "#e6c67b", "#72dd91", "#e1707d", "#e17669", "#78cce1", "#e2bf6e", "#e07391", "#e49971", "#e26cac", "#e5b270", "#e3b36b", "#86df73", "#6fbce2", "#70e47b", "#68aedc", "#7099de"]
         };
     },
     watch: {
@@ -65,15 +70,6 @@ export default {
     },
     mounted() {
         this.getModels();
-        this.preview = document.querySelector("#preview");
-    },
-    computed: {
-        fileData() {
-            const file = document.querySelector("#formFile").files[0];
-            const formData = new FormData();
-            formData.append("document", file);
-            return formData;
-        }
     },
     methods: {
         onModelSelectedChanged(event) {
@@ -88,6 +84,7 @@ export default {
                 });
         },
         requestAnalysis() {
+            this.requesting = true;
             fetch("http://localhost:5000/document/analyze", {
                 method: "POST",
                 headers: {
@@ -96,7 +93,7 @@ export default {
                 },
                 body: JSON.stringify({
                     model: this.selectedModel,
-                    filename: this.filename
+                    filename: this.pdf_filename
                 }),
             })
                 .then(res => res.json())
@@ -104,6 +101,7 @@ export default {
                     this.classifications = json.classifications;
                     this.labels = json.labels;
                     this.showClasses();
+                    this.requesting = false;
                 });
         },
         showClasses() {
@@ -112,17 +110,13 @@ export default {
                 el.setAttribute("data-bs-toggle", "tooltip");
                 el.setAttribute("data-bs-placement", "right");
                 el.setAttribute("data-bs-title", "[" + Math.round(element.confidence * 100 * 100) / 100 + "%] SDG " + element.sdg + ": " + this.labels[element.label]);
+                new Tooltip(el);
                 if (element.confidence * 100 >= this.threshold) {
-                    //el.classList.add("sdg" + element.sdg);
                     el.style.backgroundColor = this.COLORS[element.sdg];
                 }
                 else {
                     el.style.backgroundColor = null;
-                    //el.classList.remove("sdg" + element.sdg);
                 }
-            });
-            document.querySelectorAll("[data-bs-toggle=\"tooltip\"]").forEach(element => {
-                new Tooltip(element);
             });
         },
         uploadFile(event) {
@@ -135,10 +129,11 @@ export default {
                 mode: "cors"
             })
                 .then(res => res.json())
-                .then(res => {
-                    this.preview.innerHTML = res.html;
-                    this.filename = res.filename;
-                });
+                .then(json => {
+                    this.$refs.preview.innerHTML = json.html;
+                    this.pdf_filename = json.filename;
+                })
+                .catch(err => console.error(err));
         }
     },
     components: { StatsComponent }
@@ -146,71 +141,11 @@ export default {
 </script>
 
 <style>
-.sdg1 {
-    background-color: #e16f78;
+sentence {
+    border-radius: 5%;
 }
-
-.sdg2 {
-    background-color: #e6c67b;
-}
-
-.sdg3 {
-    background-color: #e6c67b;
-}
-
-.sdg4 {
-    background-color: #e1707d;
-}
-
-.sdg5 {
-    background-color: #e17669;
-}
-
-.sdg6 {
-    background-color: #78cce1;
-}
-
-.sdg7 {
-    background-color: #e2bf6e;
-}
-
-.sdg8 {
-    background-color: #e07391;
-}
-
-.sdg9 {
-    background-color: #e49971;
-}
-
-.sdg10 {
-    background-color: #e26cac;
-}
-
-.sdg11 {
-    background-color: #e5b270;
-}
-
-.sdg12 {
-    background-color: #e3b36b;
-}
-
-.sdg13 {
-    background-color: #86df73;
-}
-
-.sdg14 {
-    background-color: #6fbce2;
-}
-
-.sdg15 {
-    background-color: #70e47b;
-}
-
-.sdg16 {
-    background-color: #68aedc;
-}
-
-.sdg17 {
-    background-color: #7099de;
+.scroll-y {
+    overflow-y: scroll;
+    position: absolute;
 }
 </style>
