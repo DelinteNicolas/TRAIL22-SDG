@@ -11,7 +11,8 @@ def before_all(context):
         version = load_version(context)
         context.classifier = BertClassifier(filename=f"DelinteNicolas/SDG_classifier_v{version}")
     elif classifier_name == 'random-forest':
-        context.classifier = RandomForestClassifier()
+        random_state = load_random_state(context)
+        context.classifier = RandomForestClassifier(random_state=random_state)
     elif classifier_name == 'naive-bayes':
         version = load_version(context, default='prior')
         context.classifier = NaiveBayesClassifier(version == 'prior')
@@ -28,7 +29,12 @@ def load_version(context, default='0.0.4'):
 
 def load_classifier_name(context):
     try:
-        cls: str = context.config.userdata['model']
+        return context.config.userdata['model']
     except KeyError:
-        cls = 'bert'
-    return cls
+        return 'bert'
+
+def load_random_state(context):
+    try:
+        return int(context.config.userdata['random_state'])
+    except KeyError:
+        return None

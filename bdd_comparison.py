@@ -4,7 +4,7 @@ import subprocess
 import datetime
 import os
 
-def report(index_path, model, version="0.0.5"):
+def report(index_path, model, version="0.0.5", random_state=None):
     dir_name = model
     if model == 'bert' or model == 'naive-bayes':
         dir_name += f"-{version}"
@@ -18,7 +18,8 @@ def report(index_path, model, version="0.0.5"):
             "-f", "html", 
             "-o", os.path.join("..", report_path),
             "-D", f"model={model}",
-            "-D", f"version={version}"]  
+            "-D", f"version={version}",
+            "-D", f"random_state={random_state}"]  
             , cwd="src", shell=True, stdout=subprocess.PIPE)
     summary = output.stdout.read().decode("utf-8")
     with open(summary_path, "w+") as f:
@@ -35,4 +36,4 @@ if __name__ ==  "__main__":
     report(index_path, "bert", "0.0.2") # no class 0
     report(index_path, "naive-bayes", "prior")
     report(index_path, "naive-bayes", "no-prior")
-    report(index_path, "random-forest")
+    report(index_path, "random-forest", random_state=40)
