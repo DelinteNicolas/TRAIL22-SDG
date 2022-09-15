@@ -8,12 +8,12 @@ from .classifier import Classifier
 
 
 class NaiveBayesClassifier(Classifier):
-    def __init__(self, tokenizer: Callable[[str], str]=None):
+    def __init__(self, tokenizer: Callable[[str], str] = None, with_prior=True):
         Classifier.__init__(self, sdg.SDGS)
         if tokenizer is None:
             tokenizer = sdg.tokenizers.lemmatize_stem
         self.vectorizer = sdg.utils.get_vectorizer()
-        self.clf = MultinomialNB()
+        self.clf = MultinomialNB(fit_prior=with_prior)
         self.tokenizer = tokenizer
         train_x, train_y, _, _ = sdg.dataset.load_sdg()
         self.train(train_x, train_y)
