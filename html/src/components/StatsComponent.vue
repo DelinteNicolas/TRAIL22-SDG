@@ -1,6 +1,6 @@
 <template>
     <div class="col-4">
-        <Doughnut ref="piechart" :chart-options="chartOptions" :chart-data="chartData" />
+        <Doughnut ref="piechart" :chart-data="chartData" />
     </div>
 </template>
 
@@ -28,15 +28,24 @@ export default {
         threshold: Number,
         labels: Array
     },
-    watch: {
-        threshold() {
-            this.debouncedUpdatePlots();
+    computed: {
+        nLabels() {
+            return this.labels.length;
         },
-        classifications() {
-            this.debouncedUpdatePlots();
+        chartData() {
+            const histo = this.labelsHistogram();
+            return {
+                labels: this.labels,
+                datasets: [{
+                    label: "Colours dataset",
+                    data: histo,
+                    backgroundColor: this.colors,
+                    hoverOffset: 4
+                }]
+            };
         }
     },
-    computed: {
+    methods: {
         labelsHistogram() {
             const histo = new Array(this.nLabels + 1).fill(0);
             this.classifications.forEach(clf => {
@@ -46,33 +55,6 @@ export default {
             });
             return histo;
         },
-        nLabels() {
-            return this.labels.length;
-        },
-        chartData() {
-            const histo = this.labelsHistogram;
-            console.log(histo);
-            return {
-                labels: this.labels,
-                datasets: [{
-                    label: 'Colours dataset',
-                    data: histo,
-                    backgroundColor: this.colors,
-                    hoverOffset: 4
-                }]
-            };
-        }
-    },
-    methods: {
-        debouncedUpdatePlots() {
-            if (this.debouncedUpdate == null) {
-                clearTimeout(this.debouncedUpdate);
-            }
-            this.debouncedUpdate = setTimeout(this.updatePlots, 100);
-        },
-        updatePlots() {
-            this.$refs.piechart.updateChart();
-        }
     }
 }
 </script>
